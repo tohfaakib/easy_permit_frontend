@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetSmartyAutoCompleteAddress } from "../services/smartyAutoCompleteAddress.service";
+import { GetSmartyAutoCompleteAddress, GetPermitValidation } from "../services/smartyAutoCompleteAddress.service";
 import { toast } from "react-toastify";
 
-const smartyAutoCompleteAddressSlice = createSlice({
+export const smartyAutoCompleteAddressSlice = createSlice({
     name: "autoCompleteAddress",
     initialState: {
         smartyAutoCompleteAddressList: [],
@@ -38,4 +38,33 @@ const smartyAutoCompleteAddressSlice = createSlice({
 
 export const { nullifyAutoCompleteAddress } = smartyAutoCompleteAddressSlice.actions
 
-export default smartyAutoCompleteAddressSlice.reducer;
+export const getPermitValidationSlice = createSlice({
+    name: "getPermitValidationSlice",
+    initialState: {
+        getPermitValidation: [],
+        getPermitValidationLoading: false,
+        getPermitValidationError: null,
+    },
+    reducers: {},
+    extraReducers:
+    (builder) => {
+        builder.addCase(GetPermitValidation.pending, (state) => {
+            state.getPermitValidationLoading = true
+        });
+        builder.addCase(GetPermitValidation.fulfilled, (state, action) => {
+            toast.dismiss();
+
+            state.getPermitValidation = action.payload
+            state.getPermitValidationLoading = false
+            state.getPermitValidationError = null
+        });
+        builder.addCase(GetPermitValidation.rejected, (state, action) => {
+            toast.dismiss();
+            toast.error("Get permit validation error!")
+
+            state.getPermitValidationLoading = false
+            state.getPermitValidationError = action.error?.message
+        })
+    }
+});
+

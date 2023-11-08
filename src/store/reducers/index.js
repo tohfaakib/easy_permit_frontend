@@ -3,14 +3,17 @@ import { combineReducers } from 'redux';
 
 // project import
 import menu from './menu';
-import smartyAutoCompleteAddressSlice from '../../slices/smartyAutoCompleteAddressSlice.slice';
+import {smartyAutoCompleteAddressSlice, getPermitValidationSlice} from '../../slices/smartyAutoCompleteAddressSlice.slice';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
+const smartyAutoCompleteAddress = smartyAutoCompleteAddressSlice.reducer
+const getPermitValidation = getPermitValidationSlice.reducer
 
 const reducers = combineReducers(
     { 
         menu,
-        smartyAutoCompleteAddressSlice,
+        smartyAutoCompleteAddress,
+        getPermitValidation,
     }
 );
 

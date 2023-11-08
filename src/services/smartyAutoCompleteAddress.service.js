@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from "@reduxjs/toolkit";
+const BASE_URL = process.env.REACT_APP_MAIN_URL
 
 export const GetSmartyAutoCompleteAddress = createAsyncThunk(
   "autocomplete/GetSmartyAutoCompleteAddress",
@@ -16,4 +17,11 @@ export const GetSmartyAutoCompleteAddress = createAsyncThunk(
 
 );
 
-
+export const GetPermitValidation = createAsyncThunk(
+  "autocomplete/GetPermitValidation",
+  async (data) => {
+    console.log("data in: ", data?.value)
+    const response = await axios.post(`${BASE_URL}/api/get-permit-validation`, data?.value)
+    return response.data
+  }
+)

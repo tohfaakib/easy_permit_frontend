@@ -9,15 +9,17 @@ import  SmartyAutocompleteAddress  from '../../components/SmartyAutocompleteAddr
 // project import
 import MainCard from 'components/MainCard';
 import { autoCompleteAddressSearchSchemaValidation } from '../../utils/formikSchemaValidation/autoCompleteAddressSearchSchemaValidation';
-import {GetSmartyAutoCompleteAddress} from '../../services/smartyAutoCompleteAddress.service';
+import {GetSmartyAutoCompleteAddress, GetPermitValidation} from '../../services/smartyAutoCompleteAddress.service';
 import { nullifyAutoCompleteAddress } from "../../slices/smartyAutoCompleteAddressSlice.slice";
 
 // ===============================|| COMPONENT - SEARCH ||=============================== //
 
 const Search = () => {
-  const { smartyAutoCompleteAddressList } = useSelector((state) => state.smartyAutoCompleteAddressSlice)
+  const { smartyAutoCompleteAddressList } = useSelector((state) => state.smartyAutoCompleteAddress)
+  const { getPermitValidation } = useSelector((state) => state.getPermitValidation)
   
   // console.log(smartyAutoCompleteAddressList, autoCompleteAddressLoading, autoCompleteAddressError);
+  console.log("getPermitValidation: ", getPermitValidation)
 
   const dispatch = useDispatch();
 
@@ -46,13 +48,14 @@ const Search = () => {
     if(address.length >=1){
       dispatch(GetSmartyAutoCompleteAddress(address));
     }
+    dispatch(nullifyAutoCompleteAddress());
   }
 
   // Call Smarty AutoComplete Address Back-End validation API OnChange
   const handelOnChangeSmartyAutoCompleteAddress = (address) => {
     console.log("handelOnChangeSmartyAutoCompleteAddress: ", address?.value)
-    dispatch(nullifyAutoCompleteAddress())
-    // dispatch(GetSmartyAutoCompleteAddress(address));
+    // dispatch(nullifyAutoCompleteAddress());
+    dispatch(GetPermitValidation(address));
   }
 
   
