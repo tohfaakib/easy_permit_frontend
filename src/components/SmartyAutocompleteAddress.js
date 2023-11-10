@@ -6,19 +6,19 @@ import Autocomplete from '@mui/material/Autocomplete';
 export default function SmartyAutocompleteAddress({id, label, data, value, onChange, onInputChange}) {
 
   const convertedData = [
-      {
-        label: '', value: '',
-      }
+    {
+      label: '', value: '',
+    }
   ];
 
   data.forEach(item => {
-      const label = `${item.street_line}, ${item.city}, ${item.state}, ${item.zipcode}`;
-      const value = item;
+    const label = `${item.street_line}, ${item.city}, ${item.state}, ${item.zipcode}`;
+    const value = item;
 
-      // Check if the label is not already in list2 before adding
-      if (!convertedData.some(existingItem => existingItem.label === label)) {
-        convertedData.push({ label, value });
-      }
+    // Check if the label is not already in list2 before adding
+    if (!convertedData.some(existingItem => existingItem.label === label)) {
+      convertedData.push({ label, value });
+    }
   });
 
   const defaultProps = {
