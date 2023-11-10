@@ -45,7 +45,11 @@ export const getPermitValidationSlice = createSlice({
         getPermitValidationLoading: false,
         getPermitValidationError: null,
     },
-    reducers: {},
+    reducers: {
+        nullifyPermitValidation: (state) => {
+            state.getPermitValidation = [];
+        }
+    },
     extraReducers:
     (builder) => {
         builder.addCase(GetPermitValidation.pending, (state) => {
@@ -68,3 +72,4 @@ export const getPermitValidationSlice = createSlice({
     }
 });
 
+export const { nullifyPermitValidation } = getPermitValidationSlice.actions

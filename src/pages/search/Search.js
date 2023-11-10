@@ -1,16 +1,17 @@
-import React from 'react';
+import React  from 'react';
 // Redux
 import {useSelector, useDispatch} from 'react-redux';
 // Formik
 import { useFormik } from 'formik';
 // material-ui
-import {Grid, } from '@mui/material';
+import { Grid, } from '@mui/material';
 import  SmartyAutocompleteAddress  from '../../components/SmartyAutocompleteAddress';
+import CustomButton from 'components/Button';
 // project import
-import MainCard from 'components/MainCard';
+// import MainCard from 'components/MainCard';
 import { autoCompleteAddressSearchSchemaValidation } from '../../utils/formikSchemaValidation/autoCompleteAddressSearchSchemaValidation';
-import {GetSmartyAutoCompleteAddress, GetPermitValidation} from '../../services/smartyAutoCompleteAddress.service';
-import { nullifyAutoCompleteAddress } from "../../slices/smartyAutoCompleteAddressSlice.slice";
+import { GetSmartyAutoCompleteAddress, GetPermitValidation } from '../../services/smartyAutoCompleteAddress.service';
+import { nullifyAutoCompleteAddress, nullifyPermitValidation } from "../../slices/smartyAutoCompleteAddressSlice.slice";
 
 // ===============================|| COMPONENT - SEARCH ||=============================== //
 
@@ -33,14 +34,16 @@ const Search = () => {
     initialValues: createInitialValue,
     validationSchema: autoCompleteAddressSearchSchemaValidation,
     onSubmit: (values) => {
-      handelSubmit(values);
+      console.log("on submit data in: ", values)
+      handleSubmit_(values);
     },
     enableReinitialize: true,
   });
 
-  // Handel Submit
-  const handelSubmit = async (data) => {
-    dispatch(GetSmartyAutoCompleteAddress(data));
+  // Handle Submit
+  const handleSubmit_ = async (data) => {
+    console.log("on submit data: ", data)
+    await dispatch(GetPermitValidation(address));
   };
 
   // Call Smarty AutoComplete Address Front-End API OnInputChange
@@ -54,37 +57,40 @@ const Search = () => {
   // Call Smarty AutoComplete Address Back-End validation API OnChange
   const handelOnChangeSmartyAutoCompleteAddress = (address) => {
     console.log("handelOnChangeSmartyAutoCompleteAddress: ", address?.value)
-    // dispatch(nullifyAutoCompleteAddress());
+    dispatch(nullifyPermitValidation());
     dispatch(GetPermitValidation(address));
   }
 
   
   return(
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={0} md={2}>
-
-        </Grid>
-        <Grid item xs={12} sm={12} md={8}>
-          <MainCard title="Search Address">
-            <form onSubmit={formik.handelSubmit}>
-              <SmartyAutocompleteAddress 
-                id="auto-complete"
-                label='Search Address'
-                data={smartyAutoCompleteAddressList}
-                value={formik.values.address}
-                onChange={(_, address) => {
-                  formik.setFieldValue('address', address)
-                  handelOnChangeSmartyAutoCompleteAddress(address);
-                }}
-                onInputChange={handelOnInputChangeSmartyAutoCompleteAddress}
-              />
+      <Grid container spacing={3} >
+        <Grid item xs={12} sm={0} md={2}></Grid>
+        <Grid item xs={12} sm={12} md={8} >
+          {/* <MainCard title="Search Address"> */}
+            <form onSubmit={formik.handleSubmit}>
+              <Grid item xs={12} sm={12} md={12}>
+                <SmartyAutocompleteAddress 
+                    id="auto-complete"
+                    label='Search Address'
+                    data={smartyAutoCompleteAddressList}
+                    value={formik.values.address}
+                    onChange={(_, address) => {
+                      formik.setFieldValue('address', address)
+                      handelOnChangeSmartyAutoCompleteAddress(address);
+                    }}
+                    onInputChange={handelOnInputChangeSmartyAutoCompleteAddress}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} style={{textAlign: 'center', marginTop: '20px'}}>
+                <p>{getPermitValidation?.data}</p>
+                <CustomButton />
+                {/* <button type='submit' name='search'>Search</button> */}
+              </Grid>
             </form>
-          </MainCard>
+          {/* </MainCard> */}
         </Grid>
-        <Grid item xs={12} sm={0} md={2}>
-
-        </Grid>
+        <Grid item xs={12} sm={0} md={2}></Grid>
       </Grid>
     </>
   )
