@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 // import Stack from '@mui/material/Stack';
 
-export default function SmartyAutocompleteAddress({id, label, data, value, onChange, onInputChange}) {
+export default function SmartyAutocompleteAddress({id, label, name, data, value, onChange, onInputChange}) {
 
   const convertedData = [
     {
@@ -43,7 +43,7 @@ export default function SmartyAutocompleteAddress({id, label, data, value, onCha
         onChange={onChange}
         onInputChange={onInputChange}
         renderInput={(params) => (
-          <TextField {...params} label={label} variant="standard" />
+          <TextField {...params} label={label} name={name} variant="standard" />
         )}
         isOptionEqualToValue={isOptionEqualToValue}
       />
