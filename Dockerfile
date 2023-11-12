@@ -20,7 +20,7 @@ RUN npx update-browserslist-db@latest
 ##RUN yarn build
 
 # Expose a port for the React application (e.g., 3000)
-EXPOSE 3000
+EXPOSE 5000
 
 # Specify the command to run your React app
 CMD [ "yarn", "start" ]
