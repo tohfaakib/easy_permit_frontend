@@ -83,7 +83,7 @@ const Search = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} style={{textAlign: 'center', marginTop: '20px'}}>
-                <p>{getPermitValidation?.data}</p>
+                <p>{getPermitValidation?.data?.message}</p>
                 <CustomButton />
                 {/* <button type='submit' name='search'>Search</button> */}
               </Grid>
