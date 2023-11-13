@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 // Redux
 import {useSelector, useDispatch} from 'react-redux';
 // Formik
@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 // import { autoCompleteAddressSearchSchemaValidation } from '../../utils/formikSchemaValidation/autoCompleteAddressSearchSchemaValidation';
 import { GetSmartyAutoCompleteAddress, GetPermitValidation } from '../../services/smartyAutoCompleteAddress.service';
 import { nullifyAutoCompleteAddress, 
-  // nullifyPermitValidation 
+  nullifyPermitValidation 
 } from "../../slices/smartyAutoCompleteAddressSlice.slice";
 
 // ===============================|| COMPONENT - SEARCH ||=============================== //
@@ -26,6 +26,7 @@ const EasySearch = () => {
   const { getPermitValidation } = useSelector((state) => state.getPermitValidation)
 
   const dispatch = useDispatch();
+  console.log("response: ", getPermitValidation?.data?.message)
 
   // Formik Setup
   const formik = useFormik({
@@ -34,7 +35,6 @@ const EasySearch = () => {
     },
     // validationSchema: autoCompleteAddressSearchSchemaValidation,
     onSubmit: (values) => {
-      console.log("on submit data in: ", values)
       handleSubmit_(values);
     },
     enableReinitialize: true,
@@ -42,13 +42,15 @@ const EasySearch = () => {
 
   // Handle Submit
   const handleSubmit_ = async (data) => {
-    console.log("on submit data: ", data)
     // dispatch(nullifyPermitValidation());
     await dispatch(GetPermitValidation(data?.address));
   };
 
   // Call Smarty AutoComplete Address Front-End API OnInputChange
   const handelOnInputChangeSmartyAutoCompleteAddress = (event, address) => {
+    if(address.length === 0){
+      dispatch(nullifyPermitValidation());
+    }
     if(address.length >=5){
       dispatch(GetSmartyAutoCompleteAddress(address));
     }
@@ -85,8 +87,11 @@ const EasySearch = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} style={{textAlign: 'center', marginTop: '20px'}}>
-                {/* <p>{getPermitValidation?.data?.message}</p> */}
-                <Button type="submit" variant="outlined" color={getPermitValidation?.data?.success === true ? "success" : 'primary'} endIcon={<Search />}>
+                <p>{getPermitValidation?.data?.success === false ? 'Not Available' : ''}</p>
+                <Button type="submit" variant="outlined" color={
+                  getPermitValidation?.data?.success === true ? "success" : getPermitValidation?.data?.success === false ? 'secondary' :'primary'
+                  } endIcon={<Search />}
+                  >
                    {getPermitValidation?.data?.success === true ? 'Get permit' : 'Submit'}
                 </Button>
               </Grid>

@@ -41,7 +41,7 @@ export const { nullifyAutoCompleteAddress } = smartyAutoCompleteAddressSlice.act
 export const getPermitValidationSlice = createSlice({
     name: "getPermitValidationSlice",
     initialState: {
-        getPermitValidation: [],
+        getPermitValidation: null,
         getPermitValidationLoading: false,
         getPermitValidationError: null,
     },
