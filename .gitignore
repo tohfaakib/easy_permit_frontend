@@ -109,4 +109,3 @@ dist
 #output
 build
 .env
-package-lock.json

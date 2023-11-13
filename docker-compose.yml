@@ -1,21 +1,14 @@
 version: '3.7'
 services:
-  react-hot-reload:
+  easypermit-frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: react-hot-reload:easypermit-hot-reload
-    # container_name: easypermit-hot-reload
-    # volumes:
-    #   - .:/home/app
-      # - react_hot_reload: /home/app/node_modules
+    image: easypermit-frontend
+    container_name: easypermit-frontend
     ports:
       - '5000:5000'
     expose:
       - 5000
-    stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    command: yarn start
-    networks:
-      - default
+    env_file:
+      - ./.env
