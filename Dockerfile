@@ -6,7 +6,7 @@ WORKDIR /home/app
 
 COPY package.json ./
 
-RUN yarn install
+RUN yarn install --network-timeout=30000
 COPY . .
 # Expose a port for the React application (e.g., 3000)
 EXPOSE 5000
