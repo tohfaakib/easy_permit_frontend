@@ -1,33 +1,33 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+// import { useRef, useState } from 'react';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
+// // material-ui
+// import { useTheme } from '@mui/material/styles';
 import {
-  Avatar,
+  // Avatar,
   Box,
-  ButtonBase,
-  CardContent,
-  ClickAwayListener,
-  Grid,
-  IconButton,
-  Paper,
-  Popper,
-  Stack,
-  Tab,
-  Tabs,
-  Typography
+  // ButtonBase,
+  // CardContent,
+  // ClickAwayListener,
+  // Grid,
+  // IconButton,
+  // Paper,
+  // Popper,
+  // Stack,
+  // Tab,
+  // Tabs,
+  // Typography
 } from '@mui/material';
 
 // project import
-import MainCard from 'components/MainCard';
-import Transitions from 'components/@extended/Transitions';
-import ProfileTab from './ProfileTab';
-import SettingTab from './SettingTab';
+// import MainCard from 'components/MainCard';
+// import Transitions from 'components/@extended/Transitions';
+// import ProfileTab from './ProfileTab';
+// import SettingTab from './SettingTab';
 
-// assets
-import avatar1 from 'assets/images/users/avatar-1.png';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+// // assets
+// import avatar1 from 'assets/images/users/avatar-1.png';
+// import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -44,46 +44,46 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired
 };
 
-function a11yProps(index) {
-  return {
-    id: `profile-tab-${index}`,
-    'aria-controls': `profile-tabpanel-${index}`
-  };
-}
+// function a11yProps(index) {
+//   return {
+//     id: `profile-tab-${index}`,
+//     'aria-controls': `profile-tabpanel-${index}`
+//   };
+// }
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 const Profile = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
 
-  const handleLogout = async () => {
-    // logout
-  };
+  // const handleLogout = async () => {
+  //   // logout
+  // };
 
-  const anchorRef = useRef(null);
-  const [open, setOpen] = useState(false);
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+  // const anchorRef = useRef(null);
+  // const [open, setOpen] = useState(false);
+  // const handleToggle = () => {
+  //   setOpen((prevOpen) => !prevOpen);
+  // };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-    setOpen(false);
-  };
+  // const handleClose = (event) => {
+  //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
+  //     return;
+  //   }
+  //   setOpen(false);
+  // };
 
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
-  const iconBackColorOpen = 'grey.300';
+  // const iconBackColorOpen = 'grey.300';
 
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-      <ButtonBase
+      {/* <ButtonBase
         sx={{
           p: 0.25,
           bgcolor: open ? iconBackColorOpen : 'transparent',
@@ -199,7 +199,7 @@ const Profile = () => {
             )}
           </Transitions>
         )}
-      </Popper>
+      </Popper> */}
     </Box>
   );
 };

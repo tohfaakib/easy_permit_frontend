@@ -5,31 +5,24 @@ import {useSelector, useDispatch} from 'react-redux';
 import { useFormik } from 'formik';
 // material-ui
 // import * as Yup from 'yup';
-import { TextField, Button, Grid, Paper, Typography, Container } from '@mui/material';
+import { TextField, Button, Grid, Paper, Typography, Container, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel } from '@mui/material';
 
 import  SmartyAutocompleteAddress  from '../../components/SmartyAutocompleteAddress';
-// import CustomButton from 'components/Button';
 import Search from '@mui/icons-material/Search';
 
 
 // project import
-// import MainCard from 'components/MainCard';
-// import { autoCompleteAddressSearchSchemaValidation } from '../../utils/formikSchemaValidation/autoCompleteAddressSearchSchemaValidation';
 import { GetSmartyAutoCompleteAddress, GetPermitValidation } from '../../services/smartyAutoCompleteAddress.service';
 import { nullifyAutoCompleteAddress, 
   nullifyPermitValidation 
 } from "../../slices/smartyAutoCompleteAddressSlice.slice";
-
-// ===============================|| COMPONENT - SEARCH ||=============================== //
 
 const EasySearch = () => {
   const { smartyAutoCompleteAddressList } = useSelector((state) => state.smartyAutoCompleteAddress)
   const { getPermitValidation } = useSelector((state) => state.getPermitValidation)
 
   const dispatch = useDispatch();
-  console.log("response: ", getPermitValidation?.data?.message)
-  console.log("property data: ", getPermitValidation?.data?.data)
-
+  // console.log("response: ", getPermitValidation?.data?.message)
   
   const createInitialValues = {
     climate_zone: '',
@@ -42,14 +35,16 @@ const EasySearch = () => {
     lot_size: '',
     bedrooms: '',
     total_rooms: '',
+    project_extent:'',
+    construction_worker: '',
   };
   
+  // Property details update Formik Setup
   const formikForm = useFormik({
     initialValues: createInitialValues,
     // validationSchema,
     onSubmit: (values) => {
-      // Handle form submission logic here
-      console.log(values);
+      console.log('property update data: ', values);
     },
   });
 
@@ -57,14 +52,13 @@ const EasySearch = () => {
     if (getPermitValidation?.data?.data) {
       formikForm.setValues({ ...createInitialValues, ...getPermitValidation?.data?.data });
     }
-  }, [getPermitValidation?.data?.data,]);
+  }, [getPermitValidation?.data?.data, ]);
 
-  // Formik Setup
+  // Addressh Auto Search Formik Setup
   const formik = useFormik({
     initialValues: {
       address: null,
     },
-    // validationSchema: autoCompleteAddressSearchSchemaValidation,
     onSubmit: (values) => {
       handleSubmit_(values);
     },
@@ -73,7 +67,6 @@ const EasySearch = () => {
 
   // Handle Submit
   const handleSubmit_ = async (data) => {
-    // dispatch(nullifyPermitValidation());
     await dispatch(GetPermitValidation(data?.address));
   };
 
@@ -87,14 +80,6 @@ const EasySearch = () => {
     }
     dispatch(nullifyAutoCompleteAddress());
   }
-
-  // Call Smarty AutoComplete Address Back-End validation API OnChange
-  // const handelOnChangeSmartyAutoCompleteAddress = (address) => {
-  //   console.log("handelOnChangeSmartyAutoCompleteAddress: ", address?.value)
-  //   dispatch(nullifyPermitValidation());
-  //   dispatch(GetPermitValidation(address));
-  // }
-
   
   return(
     <>
@@ -136,8 +121,9 @@ const EasySearch = () => {
         }
         
         {
-          getPermitValidation?.data?.success === true ? <>
-          <Grid item xs={12} sm={0} md={2}></Grid>
+          getPermitValidation?.data?.success === true ? 
+          <>
+            <Grid item xs={12} sm={0} md={2}></Grid>
             <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
               <Typography component="h1" variant="h5"  style={{ marginBottom: '20px', textAlign: 'center' }}>
                 Update Property Details
@@ -290,6 +276,57 @@ const EasySearch = () => {
                       error={formikForm.touched.total_rooms && Boolean(formikForm.errors.total_rooms)}
                       helperText={formikForm.touched.total_rooms && formikForm.errors.total_rooms}
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl>
+                      <FormLabel id="demo-radio-buttons-group-label">What best describes the extent of your project?</FormLabel>
+                      <RadioGroup
+                        aria-label="project_extent"
+                        name="project_extent"
+                        onChange={formikForm.handleChange}
+                        onBlur={formikForm.handleBlur}
+                        value={formikForm.values.project_extent || ''}
+                        row
+                      >
+                        <FormControlLabel value="new_structure" control={<Radio color="primary" />} label="New Structure" />
+                        <FormControlLabel value="repair_replace_alter" control={<Radio color="primary" />} label="Repair, Replace, or Alter Existing Structure"/>
+                      </RadioGroup>
+                      {formikForm.touched.project_extent && formikForm.errors.project_extent && (
+                        <Typography variant="body2" color="error">
+                          {formikForm.errors.project_extent}
+                        </Typography>
+                      )}
+                    </FormControl>
+                  </Grid>
+
+                <Grid item xs={12}>
+                  <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">Who will be doing the construction work?</FormLabel>
+                    <RadioGroup
+                      aria-label="construction_worker"
+                      name="construction_worker"
+                      onChange={formikForm.handleChange}
+                      onBlur={formikForm.handleBlur}
+                      value={formikForm.values.construction_worker || ''}
+                      row
+                    >
+                      <FormControlLabel
+                        value="owner_builder"
+                        control={<Radio color="primary" />}
+                        label="Myself as Owner-Builder"
+                      />
+                      <FormControlLabel
+                        value="licensed_contractor"
+                        control={<Radio color="primary" />}
+                        label="Licensed Contractor"
+                      />
+                    </RadioGroup>
+                    {formikForm.touched.construction_worker && formikForm.errors.construction_worker && (
+                      <Typography variant="body2" color="error">
+                        {formikForm.errors.construction_worker}
+                      </Typography>
+                    )}
+                    </FormControl>
                   </Grid>
                 </Grid>
                 <Button type="submit" fullWidth variant="outlined" color="primary" style={{ marginTop: '20px' }}>
