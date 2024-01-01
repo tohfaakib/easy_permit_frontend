@@ -23,10 +23,11 @@ const EasySearch = () => {
   const { getPermitValidation } = useSelector((state) => state.getPermitValidation)
   const { saveProperty } = useSelector((state) => state.saveProperty)
   const [currentStep, setCurrentStep] = useState(0);
+  const [propertySaveStatus, setPropertySaveStatus] = useState('');
 
   const dispatch = useDispatch();
   // console.log("response: ", getPermitValidation?.data?.message)
-  console.log("saveProperty: ", saveProperty)
+  console.log("saveProperty: ", saveProperty?.data?.success)
   
   const createInitialValues = {
     climate_zone: '',
@@ -101,10 +102,19 @@ const EasySearch = () => {
   };
 
   useEffect(() => {
-    if(saveProperty){
+    if(saveProperty?.data?.success === true){
+      setPropertySaveStatus('Data saved successfully')
       setCurrentStep(0);
     }
+    if(saveProperty?.data?.success === false){
+      setPropertySaveStatus('Data can not save')
+      setCurrentStep(2);
+    }
   }, [saveProperty, ]);
+
+  useEffect(() => {
+    setPropertySaveStatus('')
+  }, [currentStep, ]);
 
   
   return(
@@ -381,7 +391,22 @@ const EasySearch = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                
+                {
+                  saveProperty?.data?.success === true ? 
+                  <>
+                    <Typography variant="body1" style={{ color: 'green', textAlign: 'center' }}>
+                      {propertySaveStatus}
+                    </Typography>
+                  </> : <></>
+                }
+                {
+                  saveProperty?.data?.success === false ? 
+                  <>
+                    <Typography variant="body1" style={{ color: 'red', textAlign: 'center' }}>
+                      {propertySaveStatus}
+                    </Typography>
+                  </> :  <></>
+                }
                 {currentStep === 2 && (
                   <Button type="submit" fullWidth variant="outlined" color="primary" style={{ marginTop: '20px' }}>
                     Submit
