@@ -13,6 +13,7 @@ import Search from '@mui/icons-material/Search';
 
 // project import
 import { GetSmartyAutoCompleteAddress, GetPermitValidation } from '../../services/smartyAutoCompleteAddress.service';
+import { SaveProperty } from '../../services/property.service';
 import { nullifyAutoCompleteAddress, 
   nullifyPermitValidation 
 } from "../../slices/smartyAutoCompleteAddressSlice.slice";
@@ -20,10 +21,12 @@ import { nullifyAutoCompleteAddress,
 const EasySearch = () => {
   const { smartyAutoCompleteAddressList } = useSelector((state) => state.smartyAutoCompleteAddress)
   const { getPermitValidation } = useSelector((state) => state.getPermitValidation)
+  const { saveProperty } = useSelector((state) => state.saveProperty)
   const [currentStep, setCurrentStep] = useState(0);
 
   const dispatch = useDispatch();
   // console.log("response: ", getPermitValidation?.data?.message)
+  console.log("saveProperty: ", saveProperty)
   
   const createInitialValues = {
     climate_zone: '',
@@ -46,7 +49,9 @@ const EasySearch = () => {
     // validationSchema,
     onSubmit: (values) => {
       console.log('property update data: ', values);
+      handlePropertySubmit(values);
     },
+    enableReinitialize: true,
   });
 
   useEffect(() => {
@@ -55,19 +60,24 @@ const EasySearch = () => {
     }
   }, [getPermitValidation?.data?.data, ]);
 
+  // Handle Property Submit
+  const handlePropertySubmit = async (data) => {
+    await dispatch(SaveProperty(data));
+  };
+
   // Addressh Auto Search Formik Setup
   const formik = useFormik({
     initialValues: {
       address: null,
     },
     onSubmit: (values) => {
-      handleSubmit_(values);
+      handleAutoSearchSubmit(values);
     },
     enableReinitialize: true,
   });
 
-  // Handle Submit
-  const handleSubmit_ = async (data) => {
+  // Handle AutoSearch Submit
+  const handleAutoSearchSubmit = async (data) => {
     await dispatch(GetPermitValidation(data?.address));
   };
 
@@ -89,6 +99,13 @@ const EasySearch = () => {
   const handleBack = () => {
     setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
   };
+
+  useEffect(() => {
+    if(saveProperty){
+      setCurrentStep(0);
+    }
+  }, [saveProperty, ]);
+
   
   return(
     <>
