@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 // Formik
 import { useFormik } from 'formik';
 // material-ui
-// import * as Yup from 'yup';
+import * as Yup from 'yup';
 import { TextField, Button, Grid, Paper, Typography, Container, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel } from '@mui/material';
 
 import  SmartyAutocompleteAddress  from '../../components/SmartyAutocompleteAddress';
@@ -43,11 +43,26 @@ const EasySearch = () => {
     project_extent:'',
     construction_worker: '',
   };
+
+  const validationSchema = Yup.object().shape({
+    climate_zone: Yup.number().required('Climate Zone is required'),
+    full_street_address: Yup.string().required('Full Street Address is required'),
+    unit: Yup.string().required('Uni is required'),
+    apn: Yup.string().required('APN is required'),
+    owner: Yup.string().required('Owner is required'),
+    year_built: Yup.number().required('Year Built is required'),
+    square_feet: Yup.number().required('Square Feet is required'),
+    lot_size: Yup.number().required('Lot Size is required'),
+    bedrooms: Yup.number().required('Bedrooms is required'),
+    total_rooms: Yup.number().required('Total Rooms is required'),
+    project_extent: Yup.string().required('Project extend is required'),
+    construction_worker: Yup.string().required('Construction worker is required'),
+  });
   
   // Property details update Formik Setup
   const formikForm = useFormik({
     initialValues: createInitialValues,
-    // validationSchema,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log('property update data: ', values);
       handlePropertySubmit(values);
@@ -104,7 +119,7 @@ const EasySearch = () => {
   useEffect(() => {
     if(saveProperty?.data?.success === true){
       setPropertySaveStatus('Data saved successfully')
-      setCurrentStep(0);
+      setCurrentStep(2);
     }
     if(saveProperty?.data?.success === false){
       setPropertySaveStatus('Data can not save')
@@ -124,7 +139,7 @@ const EasySearch = () => {
         <Grid item xs={12} sm={0} md={2}></Grid>
         
         {
-          getPermitValidation?.data ? <></> :
+          getPermitValidation?.data?.success === true ? <></> :
           <>
             <Grid item xs={12} sm={12} md={12} >
               <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
@@ -408,9 +423,21 @@ const EasySearch = () => {
                   </> :  <></>
                 }
                 {currentStep === 2 && (
-                  <Button type="submit" fullWidth variant="outlined" color="primary" style={{ marginTop: '20px' }}>
-                    Submit
-                  </Button>
+                  <>
+                  {
+                    saveProperty?.data?.success === true ? 
+                    <>
+                      <Button type="submit" fullWidth variant="outlined" color="primary" style={{ marginTop: '20px' }}>
+                        Home
+                      </Button>
+                    </> : 
+                    <>
+                      <Button type="submit" fullWidth variant="outlined" color="primary" style={{ marginTop: '20px' }}>
+                        Submit
+                      </Button>
+                    </>
+                  }
+                  </>
                 )}
               </form>
             </Paper>
