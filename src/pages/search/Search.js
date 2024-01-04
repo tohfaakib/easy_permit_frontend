@@ -389,7 +389,7 @@ const EasySearch = () => {
                     </Grid>
                   )}
 
-                  <Grid container spacing={2} justifyContent="space-between" style={{marginTop: '5px'}}>
+                  <Grid container spacing={2} justifyContent="space-between" style={{marginTop: '1px', marginLeft: '1px'}}>
                     <Grid item>
                         {currentStep > 0 && (
                         <Button variant="contained" color="primary" onClick={handleBack}>
